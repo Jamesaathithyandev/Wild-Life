@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wild — Travel Hero</title>
+    <meta name="description" content="Embark on a wild ride around the world with our travel rental service. Discover breathtaking landscapes and hidden gems on your unforgettable journey." />
+    <meta property="og:title" content="Wild — Travel Hero" />
+    <meta property="og:description" content="Embark on a wild ride around the world with our travel rental service." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/726b168c-da47-4682-a255-cc3e02f89bae.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;800&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg-start: #ffffff;
+        --bg-paper: #f2f2f1;
+        --ink: #1d1d1d;
+        --text-secondary: #3a3a3a;
+        --rule: #a9a9a6;
+        --btn-bg: #1b1b1b;
+        --btn-text: #ffffff;
+        --pill-placeholder: #d8d3cf;
+        --hairline-color: #b9b9b9;
+
+        /* Desktop scale: min(19.6vh, 13.2vw) */
+        --fs: min(19.6vh, 13.2vw);
+      }
+
+      @media (max-width: 720px) {
+        :root {
+          /* Phone scale: min(34vw, 16.5vh) */
+          --fs: min(34vw, 16.5vh);
+        }
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: var(--bg-start);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: relative;
+      }
+
+      /* Paper layer & SVG flowing white curves */
+      .bg-layer {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-paper);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.05s linear;
+      }
+
+      .bg-curves {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Navigation (Top) */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: calc(0.14 * var(--fs)) calc(0.27 * var(--fs)) 0 calc(0.27 * var(--fs));
+        font-size: max(12px, calc(0.072 * var(--fs)));
+        font-weight: 450;
+        color: var(--text-secondary);
+        z-index: 20;
+        transform: translateY(-140%);
+        opacity: 0;
+        pointer-events: auto;
+      }
+
+      .nav-left, .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 0.55em;
+      }
+
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.18s ease;
+        white-space: nowrap;
+      }
+
+      .nav-link:hover {
+        color: var(--ink);
+      }
+
+      .nav-dot {
+        color: var(--rule);
+        user-select: none;
+        opacity: 0.7;
+      }
+
+      /* Hero & Pill */
+      .hero-container {
+        position: absolute;
+        top: 43%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        width: auto;
+        max-width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      .hero {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--fs);
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        line-height: 0.8;
+        color: var(--ink);
+        gap: calc(0.026 * var(--fs));
+        user-select: none;
+        will-change: gap;
+      }
+
+      .word-half {
+        font-size: var(--fs);
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        line-height: 0.8;
+        color: var(--ink);
+        white-space: nowrap;
+        display: inline-block;
+        pointer-events: auto;
+      }
+
+      .pill {
+        position: relative;
+        height: calc(1.81 * var(--fs));
+        width: calc(0.012 * var(--fs));
+        background-color: var(--pill-placeholder);
+        border-radius: 9999px;
+        overflow: hidden;
+        clip-path: inset(50% 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        pointer-events: auto;
+        transform: translateZ(0);
+        will-change: width, clip-path;
+      }
+
+      .pill-video {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 100%;
+        width: auto;
+        min-width: calc(4.2 * var(--fs));
+        object-fit: cover;
+        object-position: center top;
+        opacity: 1 !important;
+        pointer-events: none;
+        display: block;
+      }
+
+      .hairline-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: var(--hairline-color);
+        opacity: 1;
+        pointer-events: none;
+        z-index: 3;
+        will-change: opacity;
+      }
+
+      .pill-icons {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 calc(0.24 * var(--fs));
+        opacity: 0;
+        z-index: 4;
+        pointer-events: auto;
+        color: rgba(255, 255, 255, 0.85);
+        will-change: opacity;
+      }
+
+      .icon-breeze {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+        user-select: none;
+      }
+
+      .icon-speaker {
+        background: transparent;
+        border: none;
+        padding: 6px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+        transition: transform 0.15s ease, color 0.15s ease;
+        outline: none;
+      }
+
+      .icon-speaker:hover {
+        transform: scale(1.1);
+        color: #ffffff;
+      }
+
+      .speaker-wave {
+        transition: opacity 0.25s ease, stroke-dashoffset 0.25s ease;
+      }
+
+      .speaker-wave.is-muted {
+        opacity: 0.15;
+      }
+
+      /* Footer (Bottom) */
+      .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 calc(0.27 * var(--fs)) calc(0.14 * var(--fs)) calc(0.27 * var(--fs));
+        z-index: 20;
+        transform: translateY(160%);
+        opacity: 0;
+        pointer-events: auto;
+        will-change: transform, opacity;
+      }
+
+      .footer-left {
+        flex-shrink: 0;
+        width: calc(1.42 * var(--fs));
+      }
+
+      .footer-desc {
+        font-size: calc(0.066 * var(--fs));
+        line-height: 1.45;
+        color: var(--text-secondary);
+        letter-spacing: -0.01em;
+      }
+
+      .dropcap {
+        float: left;
+        font-size: 2.35em;
+        font-weight: 650;
+        line-height: 0.78;
+        margin-right: 0.12em;
+        margin-top: 0.05em;
+        color: var(--ink);
+      }
+
+      .footer-rule-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 calc(0.24 * var(--fs));
+        height: calc(0.3 * var(--fs));
+      }
+
+      .footer-rule {
+        width: 100%;
+        height: 1px;
+        background-color: var(--rule);
+        transform: scaleX(0);
+        transform-origin: center;
+        will-change: transform;
+      }
+
+      .footer-right {
+        flex-shrink: 0;
+      }
+
+      .btn-wild {
+        background-color: var(--btn-bg);
+        color: var(--btn-text);
+        border: none;
+        border-radius: 9999px;
+        font-family: inherit;
+        font-size: max(13px, calc(0.075 * var(--fs)));
+        font-weight: 500;
+        padding: calc(0.062 * var(--fs)) calc(0.19 * var(--fs));
+        cursor: pointer;
+        white-space: nowrap;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+        outline: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-wild:hover {
+        background-color: #000000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-wild:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+
+      .btn-wild:focus-visible {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--btn-bg);
+      }
+
+      /* Mobile layout rules (≤ 720px) */
+      .phone-only {
+        display: none;
+      }
+
+      @media (max-width: 720px) {
+        .desktop-only {
+          display: none !important;
+        }
+
+        .phone-only {
+          display: flex;
+        }
+
+        .nav {
+          padding: 16px 20px 0 20px;
+          font-size: 12.5px;
+          justify-content: center;
+        }
+
+        .nav-right {
+          display: none;
+        }
+
+        .hero-container {
+          top: 47%;
+          width: calc(100vw - 40px);
+        }
+
+        .hero {
+          flex-direction: column;
+          width: 100%;
+          gap: calc(0.03 * var(--fs));
+        }
+
+        .pill {
+          width: calc(100vw - 40px);
+          height: 1.5px;
+          clip-path: inset(0 50%);
+          border-radius: 9999px;
+        }
+
+        .pill-video {
+          width: 100%;
+          min-width: 100%;
+          left: 0;
+          transform: none;
+        }
+
+        .pill-icons {
+          padding: 0 16px;
+        }
+
+        .footer {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 0 20px 20px 20px;
+          gap: 14px;
+        }
+
+        .footer-left {
+          width: 100%;
+        }
+
+        .footer-desc {
+          font-size: 13px;
+          line-height: 1.5;
+        }
+
+        .footer-rule-container {
+          display: none;
+        }
+
+        .footer-right {
+          width: 100%;
+        }
+
+        .phone-action-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .phone-action-row .footer-rule {
+          flex: 1;
+        }
+
+        .btn-wild {
+          height: 38px;
+          padding: 0 20px;
+          font-size: 13px;
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Paper layer with flowing S-curves -->
+    <div id="bg-layer" class="bg-layer" aria-hidden="true">
+      <svg class="bg-curves" viewBox="0 0 1440 960" preserveAspectRatio="none">
+        <path d="M -100 860 C 260 760, 680 480, 1540 220" stroke="#ffffff" stroke-width="2.4" stroke-opacity="0.72" fill="none" stroke-linecap="round" />
+        <path d="M -160 920 C 320 800, 720 540, 1500 160" stroke="#ffffff" stroke-width="3.2" stroke-opacity="0.82" fill="none" stroke-linecap="round" />
+        <path d="M -80 740 C 380 640, 820 400, 1580 80" stroke="#ffffff" stroke-width="1.8" stroke-opacity="0.65" fill="none" stroke-linecap="round" />
+        <path d="M -200 620 C 220 520, 640 320, 1480 -20" stroke="#ffffff" stroke-width="2.8" stroke-opacity="0.75" fill="none" stroke-linecap="round" />
+        <path d="M 80 1020 C 480 860, 920 620, 1600 420" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.58" fill="none" stroke-linecap="round" />
+        <path d="M -120 800 C 280 680, 700 460, 1460 260" stroke="#ffffff" stroke-width="3.8" stroke-opacity="0.85" fill="none" stroke-linecap="round" />
+        <path d="M -40 500 C 340 400, 780 220, 1520 -60" stroke="#ffffff" stroke-width="1.3" stroke-opacity="0.60" fill="none" stroke-linecap="round" />
+        <path d="M 180 1080 C 560 900, 1000 660, 1640 500" stroke="#ffffff" stroke-width="2.2" stroke-opacity="0.67" fill="none" stroke-linecap="round" />
+        <path d="M -140 680 C 240 580, 660 380, 1420 120" stroke="#ffffff" stroke-width="3.0" stroke-opacity="0.78" fill="none" stroke-linecap="round" />
+        <path d="M 0 580 C 420 480, 860 300, 1560 40" stroke="#ffffff" stroke-width="1.6" stroke-opacity="0.56" fill="none" stroke-linecap="round" />
+        <path d="M 280 1140 C 680 940, 1100 680, 1680 580" stroke="#ffffff" stroke-width="2.6" stroke-opacity="0.71" fill="none" stroke-linecap="round" />
+        <path d="M -60 420 C 360 320, 840 160, 1440 -120" stroke="#ffffff" stroke-width="1.4" stroke-opacity="0.62" fill="none" stroke-linecap="round" />
+        <path d="M -180 840 C 200 720, 620 500, 1380 280" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.80" fill="none" stroke-linecap="round" />
+        <path d="M 380 1180 C 760 980, 1180 720, 1720 640" stroke="#ffffff" stroke-width="1.9" stroke-opacity="0.64" fill="none" stroke-linecap="round" />
+        <path d="M -20 340 C 400 240, 900 100, 1500 -180" stroke="#ffffff" stroke-width="2.1" stroke-opacity="0.69" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <!-- Navigation (Top) -->
+    <header id="nav" class="nav" role="banner">
+      <nav class="nav-left" aria-label="Primary navigation">
+        <a href="#home" class="nav-link">Home</a>
+        <span class="nav-dot" aria-hidden="true">·</span>
+        <a href="#features" class="nav-link">Features</a>
+        <span class="nav-dot" aria-hidden="true">·</span>
+        <a href="#templates" class="nav-link">Templates</a>
+        <span class="nav-dot" aria-hidden="true">·</span>
+        <a href="#contact" class="nav-link">Contact Us</a>
+      </nav>
+      <div class="nav-right" aria-label="Social links">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="nav-link">Instagram</a>
+        <span class="nav-dot" aria-hidden="true">·</span>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="nav-link">Facebook</a>
+      </div>
+    </header>
+
+    <!-- Main Hero -->
+    <main class="hero-container" role="main">
+      <div id="hero" class="hero">
+        <div class="word-half word-wi" aria-hidden="true">WI</div>
+
+        <div id="pill" class="pill" role="region" aria-label="Scenic floating island preview">
+          <video
+            id="pill-video"
+            class="pill-video"
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/175fbbcd-e50a-480c-bab2-ca16d4678322.mp4"
+            poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/726b168c-da47-4682-a255-cc3e02f89bae.jpg"
+            playsinline
+            muted
+            loop
+            autoplay
+            aria-label="Floating island with waterfall over sunset clouds"
+          ></video>
+
+          <!-- Hairline grey overlay -->
+          <div id="hairline-overlay" class="hairline-overlay" aria-hidden="true"></div>
+
+          <!-- Line icons inside the pill -->
+          <div id="pill-icons" class="pill-icons">
+            <div class="icon-breeze" title="Gentle breeze" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+              </svg>
+            </div>
+
+            <button id="speaker-toggle" class="icon-speaker" type="button" aria-label="Toggle sound waves" title="Toggle sound waves">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path id="wave-1" class="speaker-wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path id="wave-2" class="speaker-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="word-half word-ld" aria-hidden="true">LD</div>
+        <h1 class="sr-only">WILD Travel Rental Service</h1>
+      </div>
+    </main>
+
+    <!-- Footer (Bottom) -->
+    <footer id="footer" class="footer" role="contentinfo">
+      <div class="footer-left">
+        <p class="footer-desc">
+          <span class="dropcap">E</span>mbark on a wild ride around the world with our travel rental service. Discover breathtaking landscapes and hidden gems on your unforgettable journey.
+        </p>
+      </div>
+
+      <!-- Desktop Rule -->
+      <div class="footer-rule-container desktop-only" aria-hidden="true">
+        <div id="footer-rule-desktop" class="footer-rule"></div>
+      </div>
+
+      <!-- Desktop CTA & Phone Action Row -->
+      <div class="footer-right">
+        <div class="phone-action-row phone-only" aria-hidden="true">
+          <div id="footer-rule-mobile" class="footer-rule"></div>
+          <button id="cta-btn-mobile" class="btn-wild" type="button">
+            Let's Get Wild
+          </button>
+        </div>
+        <button id="cta-btn-desktop" class="btn-wild desktop-only" type="button">
+          Let's Get Wild
+        </button>
+      </div>
+    </footer>
+
+    <!-- App Script: Animation Engine & Interactions -->
+    <script>
+      (function () {
+        'use strict';
+
+        const TIMELINE_DURATION = 2100; // 2.1s
+        const bgLayer = document.getElementById('bg-layer');
+        const nav = document.getElementById('nav');
+        const hero = document.getElementById('hero');
+        const pill = document.getElementById('pill');
+        const pillVideo = document.getElementById('pill-video');
+        const hairlineOverlay = document.getElementById('hairline-overlay');
+        const pillIcons = document.getElementById('pill-icons');
+        const footer = document.getElementById('footer');
+        const footerRuleDesktop = document.getElementById('footer-rule-desktop');
+        const footerRuleMobile = document.getElementById('footer-rule-mobile');
+        const ctaBtnDesktop = document.getElementById('cta-btn-desktop');
+        const ctaBtnMobile = document.getElementById('cta-btn-mobile');
+        const speakerToggle = document.getElementById('speaker-toggle');
+        const wave1 = document.getElementById('wave-1');
+        const wave2 = document.getElementById('wave-2');
+
+        let animations = [];
+        let isReversing = false;
+        let isReplaying = false;
+        let hasInitialized = false;
+
+        // Speaker toggle state
+        let wavesActive = true;
+        if (speakerToggle) {
+          speakerToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            wavesActive = !wavesActive;
+            if (wave1 && wave2) {
+              if (wavesActive) {
+                wave1.classList.remove('is-muted');
+                wave2.classList.remove('is-muted');
+              } else {
+                wave1.classList.add('is-muted');
+                wave2.classList.add('is-muted');
+              }
+            }
+          });
+        }
+
+        // Recording mode support (?rec=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isRec = urlParams.get('rec') === '1';
+
+        window.__recVideo = function (t) {
+          const d = (pillVideo && pillVideo.duration > 0 && !isNaN(pillVideo.duration))
+            ? pillVideo.duration
+            : 4.25;
+          return (t % d) + (1 / 120);
+        };
+
+        // Reduced motion check
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function getFs() {
+          const isPhone = window.innerWidth <= 720;
+          if (isPhone) {
+            return Math.min(window.innerWidth * 0.34, window.innerHeight * 0.165);
+          }
+          return Math.min(window.innerHeight * 0.196, window.innerWidth * 0.132);
+        }
+
+        function buildAnimations() {
+          const isPhone = window.innerWidth <= 720;
+          const fs = getFs();
+
+          // Clear any prior active animations
+          animations.forEach(anim => anim.cancel());
+          animations = [];
+
+          if (isPhone) {
+            // Phone pill: constant width, opens vertically
+            const finalWidth = window.innerWidth - 40;
+            const finalHeight = finalWidth / 1.85;
+
+            // Update video dimensions on phone
+            pillVideo.style.height = finalHeight + 'px';
+            pillVideo.style.width = '100%';
+
+            // 1. Pill Height & Clip Keyframes
+            const pillKeyframes = [
+              { offset: 0, height: '1.5px', clipPath: 'inset(0 50%)', easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+              { offset: 0.14, height: '1.5px', clipPath: 'inset(0 0%)', easing: 'cubic-bezier(0.5, 0, 0.3, 1)' },
+              { offset: 0.30, height: (finalHeight * 0.10) + 'px', clipPath: 'inset(0 0%)', easing: 'cubic-bezier(0.45, 0, 0.3, 1)' },
+              { offset: 0.58, height: (finalHeight * 0.55) + 'px', clipPath: 'inset(0 0%)', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+              { offset: 1.0, height: finalHeight + 'px', clipPath: 'inset(0 0%)' }
+            ];
+
+            // 2. Hero Gap Keyframes (vertical stack)
+            const heroGapKeyframes = [
+              { offset: 0, gap: (0.03 * fs) + 'px' },
+              { offset: 0.14, gap: (0.03 * fs) + 'px', easing: 'cubic-bezier(0.45, 0, 0.3, 1)' },
+              { offset: 0.58, gap: (0.065 * fs) + 'px', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+              { offset: 1.0, gap: (0.10 * fs) + 'px' }
+            ];
+
+            animations.push(pill.animate(pillKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+            animations.push(hero.animate(heroGapKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+          } else {
+            // Desktop pill: height is 1.81 fs, opens horizontally
+            const finalPillWidth = 3.62 * fs;
+            pillVideo.style.height = '100%';
+            pillVideo.style.width = 'auto';
+
+            // 1. Pill Width & Clip Keyframes
+            const pillKeyframes = [
+              { offset: 0, width: (0.012 * fs) + 'px', clipPath: 'inset(50% 0)', easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+              { offset: 0.14, width: (0.012 * fs) + 'px', clipPath: 'inset(0% 0)', easing: 'cubic-bezier(0.5, 0, 0.3, 1)' },
+              { offset: 0.30, width: (0.16 * fs) + 'px', clipPath: 'inset(0% 0)', easing: 'cubic-bezier(0.45, 0, 0.3, 1)' },
+              { offset: 0.58, width: (1.81 * fs) + 'px', clipPath: 'inset(0% 0)', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+              { offset: 1.0, width: finalPillWidth + 'px', clipPath: 'inset(0% 0)' }
+            ];
+
+            // 2. Hero Gap Keyframes
+            const heroGapKeyframes = [
+              { offset: 0, gap: (0.026 * fs) + 'px' },
+              { offset: 0.14, gap: (0.026 * fs) + 'px', easing: 'cubic-bezier(0.45, 0, 0.3, 1)' },
+              { offset: 0.58, gap: (0.050 * fs) + 'px', easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+              { offset: 1.0, gap: (0.085 * fs) + 'px' }
+            ];
+
+            animations.push(pill.animate(pillKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+            animations.push(hero.animate(heroGapKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+          }
+
+          // 3. Hairline grey overlay (fades out 14% to 30%)
+          const hairlineKeyframes = [
+            { offset: 0, opacity: 1 },
+            { offset: 0.14, opacity: 1, easing: 'cubic-bezier(0.5, 0, 0.3, 1)' },
+            { offset: 0.30, opacity: 0 },
+            { offset: 1.0, opacity: 0 }
+          ];
+          animations.push(hairlineOverlay.animate(hairlineKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+
+          // 4. Background paper & white curves fade in between 45% and 78%
+          const bgKeyframes = [
+            { offset: 0, opacity: 0 },
+            { offset: 0.45, opacity: 0, easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' },
+            { offset: 0.78, opacity: 1 },
+            { offset: 1.0, opacity: 1 }
+          ];
+          animations.push(bgLayer.animate(bgKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+
+          // 5. Nav slides down from -140% between 50% and 86% with (.2,.8,.2,1)
+          const navKeyframes = [
+            { offset: 0, transform: 'translateY(-140%)', opacity: 0 },
+            { offset: 0.50, transform: 'translateY(-140%)', opacity: 1, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+            { offset: 0.86, transform: 'translateY(0%)', opacity: 1 },
+            { offset: 1.0, transform: 'translateY(0%)', opacity: 1 }
+          ];
+          animations.push(nav.animate(navKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+
+          // 6. Footer rises from +160% between 52% and 90%
+          const footerKeyframes = [
+            { offset: 0, transform: 'translateY(160%)', opacity: 0 },
+            { offset: 0.52, transform: 'translateY(160%)', opacity: 1, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' },
+            { offset: 0.90, transform: 'translateY(0%)', opacity: 1 },
+            { offset: 1.0, transform: 'translateY(0%)', opacity: 1 }
+          ];
+          animations.push(footer.animate(footerKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+
+          // 7. Rule draws from centre (scaleX 0 -> 1) between 40% and 95%
+          const ruleKeyframes = [
+            { offset: 0, transform: 'scaleX(0)' },
+            { offset: 0.40, transform: 'scaleX(0)', easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)' },
+            { offset: 0.95, transform: 'scaleX(1)' },
+            { offset: 1.0, transform: 'scaleX(1)' }
+          ];
+          if (footerRuleDesktop) {
+            animations.push(footerRuleDesktop.animate(ruleKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+          }
+          if (footerRuleMobile) {
+            animations.push(footerRuleMobile.animate(ruleKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+          }
+
+          // 8. Icons fade in after 80%
+          const iconsKeyframes = [
+            { offset: 0, opacity: 0 },
+            { offset: 0.80, opacity: 0, easing: 'ease-out' },
+            { offset: 1.0, opacity: 0.85 }
+          ];
+          animations.push(pillIcons.animate(iconsKeyframes, { duration: TIMELINE_DURATION, fill: 'forwards' }));
+        }
+
+        function playForward() {
+          isReversing = false;
+          animations.forEach(anim => {
+            anim.playbackRate = 1;
+            anim.play();
+          });
+        }
+
+        function replaySequence() {
+          if (isReplaying || animations.length === 0) return;
+          isReplaying = true;
+          isReversing = true;
+
+          let reverseCount = 0;
+          const total = animations.length;
+
+          animations.forEach(anim => {
+            anim.onfinish = function () {
+              if (isReversing) {
+                reverseCount++;
+                if (reverseCount >= total) {
+                  // Collapsed to hairline; pause briefly then open again
+                  setTimeout(() => {
+                    isReversing = false;
+                    let forwardCount = 0;
+                    animations.forEach(a => {
+                      a.currentTime = 0;
+                      a.playbackRate = 1;
+                      a.onfinish = function () {
+                        forwardCount++;
+                        if (forwardCount >= total) {
+                          isReplaying = false;
+                        }
+                      };
+                      a.play();
+                    });
+                  }, 90);
+                }
+              }
+            };
+            anim.playbackRate = -1;
+            anim.play();
+          });
+        }
+
+        // Attach CTA replay buttons
+        if (ctaBtnDesktop) {
+          ctaBtnDesktop.addEventListener('click', replaySequence);
+        }
+        if (ctaBtnMobile) {
+          ctaBtnMobile.addEventListener('click', replaySequence);
+        }
+
+        function initApp() {
+          if (hasInitialized) return;
+          hasInitialized = true;
+
+          // Start looping video
+          if (pillVideo) {
+            if (prefersReducedMotion) {
+              pillVideo.pause();
+              pillVideo.currentTime = 0;
+            } else {
+              const playPromise = pillVideo.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(function () {
+                  // Autoplay policy handled
+                });
+              }
+            }
+          }
+
+          buildAnimations();
+
+          if (prefersReducedMotion) {
+            // Jump directly to end state
+            animations.forEach(anim => {
+              anim.finish();
+            });
+            return;
+          }
+
+          playForward();
+
+          // Recording mode trigger
+          if (isRec) {
+            setTimeout(function () {
+              replaySequence();
+            }, 4900);
+          }
+        }
+
+        // Window resize handler: finishes running animations and resets layout cleanly
+        let resizeTimeout;
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function () {
+            buildAnimations();
+            // Retain open finished state after resize
+            animations.forEach(anim => {
+              anim.finish();
+            });
+          }, 100);
+        });
+
+        // Initialize once fonts are ready (with safety timeout)
+        let fontCheckDone = false;
+        function onFontsReady() {
+          if (fontCheckDone) return;
+          fontCheckDone = true;
+          initApp();
+        }
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(onFontsReady).catch(onFontsReady);
+          // Fallback if network font hangs
+          setTimeout(onFontsReady, 600);
+        } else {
+          window.addEventListener('DOMContentLoaded', onFontsReady);
+          setTimeout(onFontsReady, 300);
+        }
+      })();
+    </script>
+  </body>
+</html>

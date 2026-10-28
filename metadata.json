@@ -1,0 +1,6 @@
+{
+  "name": "Wild — Travel Hero",
+  "description": "Interactive travel hero for fictional rental brand Wild featuring animated stadium pill reveal, looping island video, and generative paper canvas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
